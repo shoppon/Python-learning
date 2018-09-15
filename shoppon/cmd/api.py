@@ -1,2 +1,8 @@
+from shoppon.logs import my_syslog
+
+LOG = my_syslog.get_logger()
+
+
 def main():
-    pass
+    my_syslog.init()
+    LOG.info("This is test message.")
