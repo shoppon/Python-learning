@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(name='shoppon',
-                 version='0.1.3',
+                 version='0.1.4',
                  description='Demo code',
                  url='https://github.com/shoppon/shoppon/',
                  author='Shoppon',
