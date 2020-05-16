@@ -3,3 +3,5 @@ scrapy >= 1.5.1
 pymongo >= 3.7.1
 oslo.config >= 6.4.0
 scrapy_splash
+sqlalchemy
+taskflow
