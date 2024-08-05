@@ -1,15 +1,9 @@
 #! /usr/bin/python
-import requests
-from socket import gethostbyname
-import logging
 from logging import Formatter
 from logging import StreamHandler
-from logging.handlers import SysLogHandler
-
-try:
-    import syslog
-except:
-    syslog = None
+from socket import gethostbyname
+import logging
+import requests
 
 
 def get_logger():
@@ -20,33 +14,29 @@ def get_logger():
     stream_handler = StreamHandler()
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
-
-    syslog_handler = SysLogHandler(
-        address='/dev/log', facility=SysLogHandler.LOG_DAEMON)
-    syslog_handler.setFormatter(formatter)
-    logger.addHandler(syslog_handler)
     return logger
 
 
 def get_current_dns():
-    return gethostbyname('shoppon.site')
+    return gethostbyname('shoppon.world')
 
 
 def get_current_ip():
-    return requests.get('http://ip.cip.cc/').text.strip()
+    return requests.get('http://jsonip.com').json().get('ip')
 
 
 def config_dns(new_ip):
-    resp = requests.put('https://api.godaddy.com/v1/domains/shoppon.site/records/A', json=[{
-        'data': new_ip,
-        'name': '@'
-    }], headers={
+    resp = requests.put('https://api.name.com/v4/domains/shoppon.world/records/245149684', json={
+        "host": "",
+        "type": "A",
+        "answer": new_ip,
+        "ttl": 300
+    }, headers={
         'accept': 'application/json',
-        'X-Shopper-Id': '39039331',
         'Content-Type': 'application/json',
-        'Authorization': 'sso-key 9Zw16udsgXS_7PpmdPmfM1UGATWUzV7zJC:Qg2Khs5jEMiRJAA627psJ7'
-    })
+    }, auth=("shoppon", "{api token}"))
     logger.info(f'Status: {resp.status_code}')
+    logger.info(f'Body: {resp.content}')
 
 
 if __name__ == '__main__':
